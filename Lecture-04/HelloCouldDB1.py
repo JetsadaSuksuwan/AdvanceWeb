@@ -33,6 +33,21 @@ class StaffSchema(ma.Schema):
 staff_schema = StaffSchema()
 staffs_schema = StaffSchema(many=True)
 
+# Create a Staff
+@app.route('/staff', methods=['POST'])
+def add_staff():
+    id = request.json['id']
+    name = request.json['name']
+    email = request.json['email']
+    phone = request.json['phone']
+
+    new_staff = Staffs(id, name, email, phone)
+
+    db.session.add(new_staff)
+    db.session.commit()
+
+    return staff_schema.jsonify(new_staff)
+
 # Get All Staffs
 @app.route('/staffs', methods=['GET'])
 def get_staffs():

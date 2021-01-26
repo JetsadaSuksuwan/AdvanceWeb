@@ -33,6 +33,13 @@ class StaffSchema(ma.Schema):
 staff_schema = StaffSchema()
 staffs_schema = StaffSchema(many=True)
 
+# Get All Staffs
+@app.route('/staffs', methods=['GET'])
+def get_staffs():
+    all_staffs = Staffs.query.all()
+    result = staffs_schema.dump(all_staffs)
+    return jsonify(result)
+
 # Create a Staff
 @app.route('/staff', methods=['POST'])
 def add_staff():
@@ -65,12 +72,14 @@ def update_staff(id):
 
     return staff_schema.jsonify(staff)
 
-# Get All Staffs
-@app.route('/staffs', methods=['GET'])
-def get_staffs():
-    all_staffs = Staffs.query.all()
-    result = staffs_schema.dump(all_staffs)
-    return jsonify(result)
+# Delete Staff
+@app.route('/staff/<id>', methods=['DELETE'])
+def delete_staff(id):
+    staff = Staffs.query.get(id)
+    db.session.delete(staff)
+    db.session.commit()
+    
+    return staff_schema.jsonify(staff)
 
 # Web Root Hello
 @app.route('/', methods=['GET'])

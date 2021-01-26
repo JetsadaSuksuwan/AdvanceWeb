@@ -48,6 +48,23 @@ def add_staff():
 
     return staff_schema.jsonify(new_staff)
 
+# Update a Staff
+@app.route('/staff/<id>', methods=['PUT'])
+def update_staff(id):
+    staff = Staffs.query.get(id)
+    
+    name = request.json['name']
+    email = request.json['email']
+    phone = request.json['phone']
+
+    staff.name = name
+    staff.email = email
+    staff.phone = phone
+
+    db.session.commit()
+
+    return staff_schema.jsonify(staff)
+
 # Get All Staffs
 @app.route('/staffs', methods=['GET'])
 def get_staffs():
@@ -58,7 +75,7 @@ def get_staffs():
 # Web Root Hello
 @app.route('/', methods=['GET'])
 def get():
-    return jsonify({'ms': 'Hello Cloud DB1-getall'})
+    return jsonify({'ms': 'Hello Cloud DB1-getall2'})
 
 # Run Server
 if __name__ == "__main__":

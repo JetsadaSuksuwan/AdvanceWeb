@@ -1,22 +1,50 @@
-import psycopg2
-try:
-    connection = psycopg2.connect(user="webadmin",
-                                    password="ABErsp37120",
-                                    host="node8553-advweb-03.app.ruk-com.cloud",
-                                    port="11106",
-                                    database="CloudDB")
-    cursor = connection.cursor()
-    print(connection.get_dsn_parameters(),"\n")
+from flask import Flask,request,jsonify
+from flask_sqlalchemy import SQLAlchemy
+from flask_marshmallow import Marshmallow
 
+app = Flask(__name__)
 
-    cursor.execute("SELECT version();")
-    record = cursor.fetchone()
-    print("You are connected to -", record,"\n")
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://webadmin:APBhgh10416@node8553-advweb-03.app.ruk-com.cloud:11106/CloudDB'
+app.config['SQLALCHEMY_TRACK_MODIFICATION'] = False
 
-except(Exception,psycopg2.Error) as error:
-    print("Error while connecting to PostgreSQL",error)
-finally:
-    if(connection):
-        cursor.close()
-        connection.close()
-        print("PostgreSQL connection is closed")
+db = SQLAlchemy(app)
+
+ma = Marshmallow(app)
+
+#Staff Class/Model
+class Staffs(db.Model):
+    id = db.Column(db.String(13),primary_key=True,unique=True)
+    name = db.Column(db.String(50))
+    email = db.Column(db.String(25))
+    phone = db.Column(db.String(10))
+
+    def init(self, id, name, email, phone):
+        self.id = id
+        self.name = name
+        self.email = email
+        self.phone = phone
+
+# Staff Schema
+class StaffSchema(ma.Schema):
+    class Meta:
+        fields =('id', 'name', 'email', 'phone')
+
+# Init Schema 
+staff_schema = StaffSchema()
+staffs_schema = StaffSchema(many=True)
+
+# Get All Staffs
+@app.route('/staffs', methods=['GET'])
+def get_staffs():
+    all_staffs = Staffs.query.all()
+    result = staffs_schema.dump(all_staffs)
+    return jsonify(result)
+
+# Web Root Hello
+@app.route('/', methods=['GET'])
+def get():
+    return jsonify({'ms': 'Hello Cloud DB1'})
+
+# Run Server
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=80)

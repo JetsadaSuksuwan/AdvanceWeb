@@ -3,8 +3,8 @@ from flask import Flask,jsonify,render_template,request
 
 app = Flask(__name__)
 
-#client = pymongo.MongoClient("mongodb://admin:AAGzez02811@10.100.2.126:27017")
-client = pymongo.MongoClient("mongodb://admin:QCEhtg52239@node9141-advweb-03.app.ruk-com.cloud:11157")
+client = pymongo.MongoClient("mongodb://admin:QCEhtg52239@10.100.2.118:27017")
+#client = pymongo.MongoClient("mongodb://admin:QCEhtg52239@node9141-advweb-03.app.ruk-com.cloud:11157")
 
 db = client["MongoDB"]
 

@@ -29,7 +29,7 @@ def get_allGame():
                         'type' : x['type'],
                         'download' : x['download']})
     for y in dlc.find():
-        output.append({'_id' : x['_id'],
+        output.append({'_iddlc' : x['_iddlc'],
                         'name' : y['name'],
                         'DLC' : y['DLC'],
                         'type' : y['type'],
@@ -50,6 +50,25 @@ def get_oneGame(name):
     else:
         output = "No such name"
     return jsonify(output)
+
+@app.route("/Getjoin", methods=['GET'])
+def get_join():
+    test = db.Game
+    join = test.aggregate([
+    {
+      "$lookup":
+        {
+          "from": "DLC",
+          "localField": "_id",
+          "foreignField": "iddlc",
+          "as": "DLC"
+        }
+   }
+])
+    return json_util.dump(join)
+    
+
+
 
 ######################### INSERT ####################
 @app.route('/Game', methods=['POST'])

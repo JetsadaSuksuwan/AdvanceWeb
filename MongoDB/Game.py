@@ -51,48 +51,48 @@ def get_oneGame(name):
         output = "No such name"
     return jsonify(output)
 
-############# JOIN  ###############
+# ############# JOIN  ###############
 
-@app.route("/Join", methods=['GET'])
-def get_join():
-    game = db.Game
-    output = game.aggregate([
-        {
-            '$lookup':
-                {
-                    'from': "DLC",
-                    'localField': '_id',
-                    'foreignField': 'iddlc',
-                    'as': "DLC"
-                }
-        }
-    ])
+# @app.route("/Join", methods=['GET'])
+# def get_join():
+#     game = db.Game
+#     output = game.aggregate([
+#         {
+#             '$lookup':
+#                 {
+#                     'from': "DLC",
+#                     'localField': '_id',
+#                     'foreignField': 'iddlc',
+#                     'as': "DLC"
+#                 }
+#         }
+#     ])
     
-    return json_util.dumps(output)
+#     return json_util.dumps(output)
 
-############## JOIN name,nameweapon ###############
+# ############## JOIN name,nameweapon ###############
 
-@app.route("/Join/<name>", methods=['GET'])
-def get_joinDLC(name):
-    game = db.Game
-    output = game.aggregate([
-        {
-            '$lookup':
-                {
-                    'from': "DLC",
-                    'localField': '_id',
-                    'foreignField': 'iddlc',
-                    'as': "DLC"
-                }
-        },
-        {'$unwind':'$DLC'},
-        {
-            '$project': {'_id':1,'name':1,
-                        'DLC':'$DLC.DLC'}
-        },
-    ])
+# @app.route("/Join/<name>", methods=['GET'])
+# def get_joinDLC(name):
+#     game = db.Game
+#     output = game.aggregate([
+#         {
+#             '$lookup':
+#                 {
+#                     'from': "DLC",
+#                     'localField': '_id',
+#                     'foreignField': 'iddlc',
+#                     'as': "DLC"
+#                 }
+#         },
+#         {'$unwind':'$DLC'},
+#         {
+#             '$project': {'_id':1,'name':1,
+#                         'DLC':'$DLC.DLC'}
+#         },
+#     ])
     
-    return json_util.dumps(output)
+#     return json_util.dumps(output)
     
 
 

@@ -53,14 +53,14 @@ def get_oneGame(name):
 
 @app.route("/Getjoin", methods=['GET'])
 def get_join():
-    test = db.Game
+    test = db.DLC
     join = test.aggregate([
     {
       "$lookup":
         {
-          "from": "DLC",
-          "localField": "_id",
-          "foreignField": "iddlc",
+          "from": "Game",
+          "localField": "iddlc",
+          "foreignField": "_id",
           "as": "DLC"
         }
    }

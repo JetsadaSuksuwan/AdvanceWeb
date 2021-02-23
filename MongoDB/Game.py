@@ -3,8 +3,8 @@ from flask import Flask,jsonify,render_template,request
 from bson import json_util
 app = Flask(__name__)
 
-#client = pymongo.MongoClient("mongodb://admin:QCEhtg52239@10.100.2.118:27017")
-client = pymongo.MongoClient("mongodb://admin:QCEhtg52239@node9141-advweb-03.app.ruk-com.cloud:11157")
+client = pymongo.MongoClient("mongodb://admin:QCEhtg52239@10.100.2.118:27017")
+#client = pymongo.MongoClient("mongodb://admin:QCEhtg52239@node9141-advweb-03.app.ruk-com.cloud:11157")
 
 db = client["MongoDB"]
 
@@ -160,4 +160,4 @@ def delete_Game(name):
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0',port = 5000)
+    app.run(host='0.0.0.0',port = 80)

@@ -19,13 +19,21 @@ def index():
 @app.route("/Game", methods=['GET'])
 def get_allGame():
     game = db.Game
+    dlc = db.DLC
     output = []
+    outputdlc = []
     for x in game.find():
         output.append({'name' : x['name'],
                        'price' : x['price'],
                         'type' : x['type'],
                         'download' : x['download']})
-    return jsonify(output)
+        for x in dlc.find():
+            output.append({'name' : x['name'],
+                       'DLC' : x['DLC'],
+                        'type' : x['type'],
+                        'pricedlc' : x['pricedlc']})
+         
+    return jsonify(output,outputdlc)
 
 ############## GET ONE ############################
 @app.route("/Game/<name>", methods=['GET'])

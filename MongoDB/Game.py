@@ -72,7 +72,7 @@ def get_join():
 ############## JOIN name,nameweapon ###############
 
 @app.route("/JoinDLC", methods=['GET'])
-def get_joinDLC(name):
+def get_joinDLC():
     game = db.Game
     output = game.aggregate([
         {

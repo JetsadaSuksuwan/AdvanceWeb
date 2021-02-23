@@ -3,8 +3,8 @@ from flask import Flask,jsonify,render_template,request
 from bson import json_util
 app = Flask(__name__)
 
-client = pymongo.MongoClient("mongodb://admin:QCEhtg52239@10.100.2.118:27017")
-#client = pymongo.MongoClient("mongodb://admin:QCEhtg52239@node9141-advweb-03.app.ruk-com.cloud:11157")
+#client = pymongo.MongoClient("mongodb://admin:QCEhtg52239@10.100.2.118:27017")
+client = pymongo.MongoClient("mongodb://admin:QCEhtg52239@node9141-advweb-03.app.ruk-com.cloud:11157")
 
 db = client["MongoDB"]
 
@@ -29,8 +29,7 @@ def get_allGame():
                         'type' : x['type'],
                         'download' : x['download']})
     for y in dlc.find():
-        output.append({'_iddlc' : x['_iddlc'],
-                        'name' : y['name'],
+        output.append({'iddlc' : y['iddlc'],
                         'DLC' : y['DLC'],
                         'type' : y['type'],
                         'pricedlc' : y['pricedlc']})
@@ -51,48 +50,48 @@ def get_oneGame(name):
         output = "No such name"
     return jsonify(output)
 
-# ############# JOIN  ###############
+############# JOIN  ###############
 
-# @app.route("/Join", methods=['GET'])
-# def get_join():
-#     game = db.Game
-#     output = game.aggregate([
-#         {
-#             '$lookup':
-#                 {
-#                     'from': "DLC",
-#                     'localField': '_id',
-#                     'foreignField': 'iddlc',
-#                     'as': "DLC"
-#                 }
-#         }
-#     ])
+@app.route("/Join", methods=['GET'])
+def get_join():
+    game = db.Game
+    output = game.aggregate([
+        {
+            '$lookup':
+                {
+                    'from': "DLC",
+                    'localField': '_id',
+                    'foreignField': 'iddlc',
+                    'as': "DLC"
+                }
+        }
+    ])
     
-#     return json_util.dumps(output)
+    return json_util.dumps(output)
 
-# ############## JOIN name,nameweapon ###############
+############## JOIN name,nameweapon ###############
 
-# @app.route("/Join/<name>", methods=['GET'])
-# def get_joinDLC(name):
-#     game = db.Game
-#     output = game.aggregate([
-#         {
-#             '$lookup':
-#                 {
-#                     'from': "DLC",
-#                     'localField': '_id',
-#                     'foreignField': 'iddlc',
-#                     'as': "DLC"
-#                 }
-#         },
-#         {'$unwind':'$DLC'},
-#         {
-#             '$project': {'_id':1,'name':1,
-#                         'DLC':'$DLC.DLC'}
-#         },
-#     ])
+@app.route("/Join/<name>", methods=['GET'])
+def get_joinDLC(name):
+    game = db.Game
+    output = game.aggregate([
+        {
+            '$lookup':
+                {
+                    'from': "DLC",
+                    'localField': '_id',
+                    'foreignField': 'iddlc',
+                    'as': "DLC"
+                }
+        },
+        {'$unwind':'$DLC'},
+        {
+            '$project': {'_id':1,'name':1,
+                        'DLC':'$DLC.DLC'}
+        },
+    ])
     
-#     return json_util.dumps(output)
+    return json_util.dumps(output)
     
 
 
@@ -161,4 +160,4 @@ def delete_Game(name):
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0',port = 80)
+    app.run(host='0.0.0.0',port = 5000)

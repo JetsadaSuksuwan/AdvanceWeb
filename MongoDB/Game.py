@@ -27,12 +27,11 @@ def get_allGame():
                        'price' : x['price'],
                         'type' : x['type'],
                         'download' : x['download']})
-        for x in dlc.find():
-            output.append({'name' : x['name'],
-                       'DLC' : x['DLC'],
-                        'type' : x['type'],
-                        'pricedlc' : x['pricedlc']})
-         
+        for y in dlc.find():
+            output.append({'name' : y['name'],
+                       'DLC' : y['DLC'],
+                        'type' : y['type'],
+                        'pricedlc' : y['pricedlc']})       
     return jsonify(output,outputdlc)
 
 ############## GET ONE ############################

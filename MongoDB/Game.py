@@ -87,7 +87,8 @@ def get_joinDLC():
         {'$unwind':'$DLC'},
         {
             '$project': {'_id':1,'name':1,
-                        'DLC':'$DLC.DLC'}
+                        'DLC':'$DLC.DLC',
+                        'pricedlc':'$DLC.pricedlc'}
         },
     ])
     

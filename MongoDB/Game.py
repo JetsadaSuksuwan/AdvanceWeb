@@ -12,7 +12,7 @@ db = client["MongoDB"]
 ####### index ###############
 @app.route("/")
 def index():
-    texts = "Hello World , Welcome to MongoDB"
+    texts = "Welcome to MongoDB"
     return texts
 
 ########## GET ALL #################
@@ -55,6 +55,7 @@ def add_Game():
                          'price': price,
                         'type': typee,
                         'download': download})
+  
   new_game = game.find_one({'_id': char_id })
   output = {'name' : new_game['name'], 
                         'price' : new_game['price'],

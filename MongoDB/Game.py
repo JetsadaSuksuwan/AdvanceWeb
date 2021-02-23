@@ -1,6 +1,6 @@
 import pymongo
 from flask import Flask,jsonify,render_template,request
-
+from bson import json_util
 app = Flask(__name__)
 
 client = pymongo.MongoClient("mongodb://admin:QCEhtg52239@10.100.2.118:27017")
@@ -51,21 +51,48 @@ def get_oneGame(name):
         output = "No such name"
     return jsonify(output)
 
-@app.route("/Getjoin", methods=['GET'])
+############# JOIN  ###############
+
+@app.route("/Join", methods=['GET'])
 def get_join():
-    test = db.Game
-    join = test.aggregate([
-    {
-      "$lookup":
+    game = db.Game
+    output = game.aggregate([
         {
-          "from": "DLC",
-          "localField": "iddlc",
-          "foreignField": "_id",
-          "as": "DLC"
+            '$lookup':
+                {
+                    'from': "DLC",
+                    'localField': '_id',
+                    'foreignField': 'iddlc',
+                    'as': "DLC"
+                }
         }
-   }
-])
-    return json_util.dump(join)
+    ])
+    
+    return json_util.dumps(output)
+
+############## JOIN name,nameweapon ###############
+
+@app.route("/Join/<name>", methods=['GET'])
+def get_inventoryjoin(name):
+    game = db.Game
+    output = game.aggregate([
+        {
+            '$lookup':
+                {
+                    'from': "DLC",
+                    'localField': '_id',
+                    'foreignField': 'iddlc',
+                    'as': "DLC"
+                }
+        },
+        {'$unwind':'$DLC'},
+        {
+            '$project': {'_id':1,'name':1,
+                        'DLC':'$DLC.DLC'}
+        },
+    ])
+    
+    return json_util.dumps(output)
     
 
 

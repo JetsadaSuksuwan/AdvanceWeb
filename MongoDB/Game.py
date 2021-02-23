@@ -23,15 +23,18 @@ def get_allGame():
     output = []
     outputdlc = []
     for x in game.find():
-        output.append({'name' : x['name'],
+        output.append({'_id' : x['_id'],
+                       'name' : x['name'],
                        'price' : x['price'],
                         'type' : x['type'],
                         'download' : x['download']})
     for y in dlc.find():
-        output.append({'name' : y['name'],
+        output.append({'_id' : x['_id'],
+                        'name' : y['name'],
                         'DLC' : y['DLC'],
                         'type' : y['type'],
-                        'pricedlc' : y['pricedlc']})        
+                        'pricedlc' : y['pricedlc']})
+         
     return jsonify(output,outputdlc)
 
 ############## GET ONE ############################

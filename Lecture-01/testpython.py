@@ -1,1 +1,1 @@
-print("Hello Advanced Web2")
+print("Hello Advanced Web")

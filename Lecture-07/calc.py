@@ -10,13 +10,13 @@ def subtract(x,y):
 
 def multiply(x,y):
     """multiply Function"""
-    return x * y
+    return x ** y
 
 
 def divide(x,y):
     """divide Function"""
     if y == 0:
         raise ValueError('Can not divide by zero!!')
-    return x / y
+    return x // y
 
 print(divide(10,2))
